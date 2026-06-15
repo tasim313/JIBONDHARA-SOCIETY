@@ -1,0 +1,739 @@
+/* ============================================================
+   A4 Editor Styles
+   ============================================================ */
+
+/* Google Fonts - Noto Sans Bengali & Inter */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================
+   Editor Wrapper
+   ============================================================ */
+.a4-editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f1f5f9;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Inter', 'Noto Sans', sans-serif;
+}
+
+/* ============================================================
+   Status Bar
+   ============================================================ */
+.a4-editor-status-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 8px 16px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 13px;
+  color: #64748b;
+  font-family: 'Inter', sans-serif;
+}
+
+.a4-editor-status-left,
+.a4-editor-status-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.a4-editor-status-item {
+  white-space: nowrap;
+}
+
+.a4-editor-status-unsaved {
+  color: #f59e0b;
+  font-style: italic;
+}
+
+/* Export Button */
+.a4-editor-export-wrapper {
+  position: relative;
+}
+
+.a4-editor-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.a4-editor-export-btn:hover {
+  background: #2563eb;
+}
+
+.a4-editor-export-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  min-width: 160px;
+  z-index: 100;
+}
+
+.a4-editor-export-option {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 13px;
+  color: #334155;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.a4-editor-export-option:hover {
+  background: #f1f5f9;
+}
+
+/* ============================================================
+   A4 Page Container
+   ============================================================ */
+.a4-page-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px 80px;
+  width: 100%;
+}
+
+/* ============================================================
+   A4 Page
+   ============================================================ */
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Editor Content Wrapper
+   ============================================================ */
+.a4-editor-content-wrapper {
+  min-height: 297mm;
+}
+
+/* ============================================================
+   Editor Content - Tiptap ProseMirror
+   ============================================================ */
+.a4-editor-content {
+  outline: none;
+  min-height: 297mm;
+  padding: 25mm;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Inter', 'Noto Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #1a1a1a;
+  cursor: text;
+}
+
+/* Placeholder */
+.a4-editor-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #94a3b8;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+.a4-editor-content h1 {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0.67em 0 0.5em;
+  color: #0f172a;
+}
+
+.a4-editor-content h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0.75em 0 0.5em;
+  color: #1e293b;
+}
+
+.a4-editor-content h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0.83em 0 0.5em;
+  color: #1e293b;
+}
+
+.a4-editor-content h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 1em 0 0.5em;
+  color: #334155;
+}
+
+.a4-editor-content h5 {
+  font-size: 1em;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 1.17em 0 0.5em;
+  color: #334155;
+}
+
+.a4-editor-content h6 {
+  font-size: 0.9em;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 1.33em 0 0.5em;
+  color: #475569;
+}
+
+.a4-editor-content p {
+  margin: 0 0 0.75em;
+  line-height: 1.8;
+}
+
+/* ============================================================
+   Inline Formatting
+   ============================================================ */
+.a4-editor-content strong {
+  font-weight: 700;
+}
+
+.a4-editor-content em {
+  font-style: italic;
+}
+
+.a4-editor-content u {
+  text-decoration: underline;
+}
+
+.a4-editor-content s {
+  text-decoration: line-through;
+}
+
+.a4-editor-content sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+}
+
+.a4-editor-content sup {
+  font-size: 0.75em;
+  vertical-align: super;
+}
+
+/* ============================================================
+   Links
+   ============================================================ */
+.a4-editor-content a.editor-link,
+.a4-editor-content a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.a4-editor-content a:hover {
+  color: #1d4ed8;
+}
+
+/* ============================================================
+   Blockquotes
+   ============================================================ */
+.a4-editor-content blockquote.editor-blockquote,
+.a4-editor-content blockquote {
+  border-left: 3px solid #3b82f6;
+  padding-left: 1em;
+  margin: 1em 0;
+  color: #475569;
+  font-style: italic;
+  background: #f8fafc;
+  padding: 0.75em 1em;
+  border-radius: 0 6px 6px 0;
+}
+
+/* ============================================================
+   Code
+   ============================================================ */
+.a4-editor-content code {
+  font-family: 'Courier New', monospace;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #e11d48;
+}
+
+.a4-editor-content pre.editor-code-block,
+.a4-editor-content pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1em 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.a4-editor-content pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* ============================================================
+   Lists
+   ============================================================ */
+.a4-editor-content ul,
+.a4-editor-content ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.a4-editor-content ul {
+  list-style-type: disc;
+}
+
+.a4-editor-content ol {
+  list-style-type: decimal;
+}
+
+.a4-editor-content li {
+  margin: 0.25em 0;
+  line-height: 1.7;
+}
+
+.a4-editor-content li > p {
+  margin: 0;
+}
+
+/* Task Lists */
+.a4-editor-content ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.a4-editor-content ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.a4-editor-content ul[data-type="taskList"] li label {
+  margin-top: 4px;
+}
+
+.a4-editor-content ul[data-type="taskList"] li label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+.a4-editor-content table.editor-table,
+.a4-editor-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  overflow: hidden;
+}
+
+.a4-editor-content table td,
+.a4-editor-content table th {
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  position: relative;
+  min-width: 80px;
+  vertical-align: top;
+}
+
+.a4-editor-content table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.a4-editor-content table td > p,
+.a4-editor-content table th > p {
+  margin: 0;
+}
+
+/* Selected cell highlight */
+.a4-editor-content .selectedCell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(59, 130, 246, 0.1);
+  pointer-events: none;
+}
+
+/* Column resize handle */
+.a4-editor-content .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #3b82f6;
+  cursor: col-resize;
+  z-index: 10;
+}
+
+/* ============================================================
+   Images
+   ============================================================ */
+.a4-editor-content img.editor-image,
+.a4-editor-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 0.5em 0;
+}
+
+.a4-editor-content img.ProseMirror-selectednode {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Horizontal Rule
+   ============================================================ */
+.a4-editor-content hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.5em 0;
+}
+
+/* ============================================================
+   Dropcursor & Gapcursor
+   ============================================================ */
+.a4-editor-content .ProseMirror-dropcursor {
+  color: #3b82f6;
+  width: 2px;
+}
+
+.a4-editor-content .ProseMirror-gapcursor::after {
+  border-top-color: #3b82f6;
+}
+
+/* ============================================================
+   Selection
+   ============================================================ */
+.a4-editor-content ::selection {
+  background: #bfdbfe;
+}
+
+.a4-editor-content .ProseMirror-selectednode {
+  outline: none;
+}
+
+/* ============================================================
+   Slash Command Menu
+   ============================================================ */
+.slash-command-menu {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  padding: 6px;
+  max-height: 320px;
+  min-width: 220px;
+  overflow-y: auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.slash-command-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s ease;
+}
+
+.slash-command-item:hover,
+.slash-command-item.active {
+  background: #f1f5f9;
+}
+
+.slash-command-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.slash-command-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.slash-command-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.slash-command-description {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* ============================================================
+   Context Menu
+   ============================================================ */
+.context-menu {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  min-width: 200px;
+  font-family: 'Inter', sans-serif;
+}
+
+.context-menu-item-wrapper {
+  position: relative;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  color: #334155;
+  transition: background 0.1s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.context-menu-item:hover {
+  background: #f1f5f9;
+}
+
+.context-menu-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.context-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.context-menu-label {
+  flex: 1;
+}
+
+.context-menu-shortcut {
+  font-size: 11px;
+  color: #94a3b8;
+  font-family: 'Inter', sans-serif;
+}
+
+.context-menu-arrow {
+  display: flex;
+  align-items: center;
+  color: #94a3b8;
+}
+
+.context-menu-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 4px 6px;
+}
+
+.context-menu-submenu {
+  position: absolute;
+  left: 100%;
+  top: -6px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  min-width: 160px;
+  z-index: 10001;
+}
+
+/* ============================================================
+   Loading State
+   ============================================================ */
+.a4-editor-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 12px;
+  color: #64748b;
+  font-family: 'Inter', sans-serif;
+}
+
+.a4-editor-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   Print Styles
+   ============================================================ */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .a4-editor-status-bar,
+  .slash-command-menu,
+  .context-menu,
+  .a4-editor-export-wrapper {
+    display: none !important;
+  }
+
+  .a4-page-container {
+    padding: 0;
+  }
+
+  .a4-page {
+    box-shadow: none;
+    margin: 0;
+    width: 210mm;
+    min-height: 297mm;
+    page-break-after: always;
+  }
+
+  .a4-editor-content {
+    padding: 25mm;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 850px) {
+  .a4-page {
+    width: 100%;
+    min-height: auto;
+    border-radius: 0;
+  }
+
+  .a4-page-container {
+    padding: 0;
+  }
+
+  .a4-editor-content {
+    padding: 20px;
+    min-height: auto;
+  }
+
+  .a4-editor-status-bar {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   Highlight Mark (from Tiptap Highlight extension)
+   ============================================================ */
+.a4-editor-content mark {
+  background-color: #fef08a;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* ============================================================
+   Embedded Editor Mode
+   ============================================================ */
+.a4-editor-embedded {
+  position: relative;
+  width: 100%;
+  min-height: 200mm;
+}
+
+.a4-editor-embedded .a4-editor-content-wrapper {
+  min-height: 200mm;
+}
+
+.a4-editor-embedded .a4-editor-content {
+  min-height: 200mm;
+  padding: 0;
+}
+
+/* ============================================================
+   Focus ring for accessibility
+   ============================================================ */
+.a4-editor-content:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
