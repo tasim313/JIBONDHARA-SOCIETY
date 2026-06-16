@@ -1,9 +1,16 @@
 /* ============================================================
-   A4 Editor Styles
-   ============================================================ */
+    A4 Editor Styles
+    ============================================================ */
 
 /* Google Fonts - Noto Sans Bengali & Inter */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================
+   Rounded corners utility
+   ============================================================ */
+.rounded-xl {
+  border-radius: 12px;
+}
 
 /* ============================================================
    Editor Wrapper
@@ -148,7 +155,7 @@
   padding: 25mm;
   font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Inter', 'Noto Sans', sans-serif;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.5;
   color: #1a1a1a;
   cursor: text;
 }
@@ -216,7 +223,8 @@
 
 .a4-editor-content p {
   margin: 0 0 0.75em;
-  line-height: 1.8;
+  line-height: 1.7;
+  text-align: justify;
 }
 
 /* ============================================================
@@ -713,8 +721,8 @@
 }
 
 /* ============================================================
-   Embedded Editor Mode
-   ============================================================ */
+    Embedded Editor Mode
+    ============================================================ */
 .a4-editor-embedded {
   position: relative;
   width: 100%;
@@ -728,6 +736,16 @@
 .a4-editor-embedded .a4-editor-content {
   min-height: 200mm;
   padding: 0;
+}
+
+/* ============================================================
+    Date contentEditable placeholder
+    ============================================================ */
+[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
+  font-style: italic;
+  pointer-events: none;
 }
 
 /* ============================================================

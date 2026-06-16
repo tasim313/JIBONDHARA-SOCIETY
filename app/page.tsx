@@ -36,7 +36,7 @@ export default function PressReleaseTemplate() {
    * Prepare a clone suitable for export:
    * - KEEPS a watermark but as a visible DOM element in the export
    * - Removes button bar
-   * - Replaces <input> elements with plain-text <span> (no browser styling)
+   * - Replaces <input> and contentEditable <span> elements with plain-text <span> (no browser styling)
    * - Removes overflow-hidden / min-height that clip or inflate content
    */
   const prepareExportClone = (): HTMLElement | null => {
@@ -52,6 +52,7 @@ export default function PressReleaseTemplate() {
     if (btns) btns.remove()
 
     // Remove overflow-hidden that clips content (especially Bengali glyphs)
+    // But preserve overflow-hidden on logo container for rounded corners
     root.classList.remove('overflow-hidden')
     root.style.overflow = 'visible'
 
@@ -81,6 +82,22 @@ export default function PressReleaseTemplate() {
       input.parentNode?.replaceChild(span, input)
     })
 
+    // Replace all contentEditable <span> elements with plain text <span>
+    // This removes browser contentEditable styling
+    root.querySelectorAll<HTMLSpanElement>('span[contenteditable]').forEach((span) => {
+      const plainSpan = root.ownerDocument!.createElement('span')
+      plainSpan.className = span.className
+      plainSpan.textContent = span.textContent || ''
+      plainSpan.style.cssText = span.getAttribute('style') || ''
+      plainSpan.style.border = 'none'
+      plainSpan.style.outline = 'none'
+      plainSpan.style.background = 'transparent'
+      plainSpan.style.boxShadow = 'none'
+      plainSpan.style.display = 'inline-block'
+      plainSpan.style.minWidth = '80px'
+      span.parentNode?.replaceChild(plainSpan, span)
+    })
+
     // ── Watermark is NOT injected in the DOM clone ───────────────────
     // Instead, it is composited via canvas in the export functions.
     // This ensures the watermark is perfectly centered on EVERY page,
@@ -95,32 +112,25 @@ export default function PressReleaseTemplate() {
    */
   const buildIframeCSS = (): string => `
 *{margin:0;padding:0;box-sizing:border-box;}
-body{width:210mm;background:#fef3c7;font-family:"Noto Sans Bengali","Inter",Arial,sans-serif;padding:0;font-size:14px;line-height:1.8;color:#1a1a1a;}
+body{width:210mm;background:#fef3c7;font-family:"Noto Sans Bengali","Inter",Arial,sans-serif;padding:0;font-size:14px;line-height:1.5;color:#1a1a1a;}
 .flex{display:flex;}.flex-col{flex-direction:column;}.flex-1{flex:1 1 0%;}
-.items-center{align-items:center;}.justify-end{justify-content:flex-end;}
-.gap-2{gap:0.5rem;}.gap-3{gap:0.75rem;}.gap-6{gap:1.5rem;}
-.mb-8{margin-bottom:2rem;}.mb-6{margin-bottom:1.5rem;}.mb-4{margin-bottom:1rem;}.mb-1{margin-bottom:0.25rem;}
-.p-12{padding:3rem;}.pb-4{padding-bottom:1rem;}
-.border-b{border-bottom-width:1px;border-bottom-style:solid;}
-.border-gray-400{border-color:#9ca3af;}.border-gray-300{border-color:#d1d5db;}
-.text-center{text-align:center;}.text-xl{font-size:1.25rem;}.text-xs{font-size:0.75rem;}.text-sm{font-size:0.875rem;}
+.items-center{align-items:center;}.justify-end{justify-content:flex-end;}.justify-center{justify-content:center;}
+.gap-2{gap:0.5rem;}.gap-3{gap:0.75rem;}.gap-4{gap:1rem;}
+.text-center{text-align:center;}.text-sm{font-size:0.875rem;}
 .font-bold{font-weight:700;}.font-semibold{font-weight:600;}
-.text-gray-700{color:#374151;}.text-gray-900{color:#111827;}
 .w-full{width:100%;}.flex-shrink-0{flex-shrink:0;}
 .relative{position:relative;}.z-10{z-index:10;}
-.bg-transparent{background:transparent;}.border-0{border-width:0;}
-.flex-wrap{flex-wrap:wrap;}
-.py-1{padding-top:0.25rem;padding-bottom:0.25rem;}.py-2{padding-top:0.5rem;padding-bottom:0.5rem;}
-/* logo box */
-.w-20{width:80px;}.h-20{height:80px;}
 .object-contain{object-fit:contain;}
+/* logo box – 90px with 20px rounded corners */
+.logo-box{width:90px;height:90px;border-radius:20px;overflow:hidden;flex-shrink:0;}
+.logo-box img{width:100%;height:100%;object-fit:contain;}
 /* ProseMirror / Tiptap content */
 .ProseMirror{outline:none;white-space:pre-wrap;word-wrap:break-word;padding:0;min-height:auto!important;}
-.a4-editor-content{padding:0;font-size:14px;line-height:1.8;color:#1a1a1a;min-height:auto!important;}
+.a4-editor-content{padding:0;font-size:14px;line-height:1.5;color:#1a1a1a;min-height:auto!important;}
 .a4-editor-content h1{font-size:2em;font-weight:700;margin:0.67em 0;overflow:visible!important;}
 .a4-editor-content h2{font-size:1.5em;font-weight:600;margin:0.75em 0;overflow:visible!important;}
 .a4-editor-content h3{font-size:1.25em;font-weight:600;margin:0.83em 0;overflow:visible!important;}
-.a4-editor-content p{margin:0 0 0.75em;overflow:visible!important;}
+.a4-editor-content p{margin:0 0 0.75em;overflow:visible!important;text-align:justify;line-height:1.7;}
 .a4-editor-content strong{font-weight:700;}
 .a4-editor-content em{font-style:italic;}
 .a4-editor-content u{text-decoration:underline;}
@@ -137,6 +147,15 @@ body{width:210mm;background:#fef3c7;font-family:"Noto Sans Bengali","Inter",Aria
 .a4-editor-content-wrapper{min-height:auto!important;}
 .a4-editor-embedded .a4-editor-content{min-height:auto!important;}
 .a4-editor-embedded .a4-editor-content-wrapper{min-height:auto!important;}
+/* corporate header */
+.corp-header{display:flex;align-items:center;gap:1rem;margin-bottom:8px;}
+.corp-header-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:2px;}
+.corp-header-text h1{font-family:"Noto Sans Bengali",Arial,sans-serif;font-size:22px;font-weight:700;color:#1b5e20;line-height:1.3;letter-spacing:0.5px;margin-bottom:3px;text-align:center;}
+.corp-header-text p{font-family:"Noto Sans Bengali",Arial,sans-serif;font-size:13px;color:#6b7280;line-height:1.4;letter-spacing:0.3px;text-align:center;}
+.corp-divider{border-bottom:1px solid #D6D6D6;margin-bottom:10px;}
+.corp-date{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-family:"Noto Sans Bengali",Arial,sans-serif;font-size:13px;color:#374151;}
+.corp-date strong{font-weight:600;}
+.corp-headline{text-align:center;font-weight:700;font-size:14px;color:#111827;font-family:"Noto Sans Bengali",Arial,sans-serif;line-height:1.5;margin-bottom:12px;padding:4px 0;}
 `
 
   /**
@@ -474,25 +493,108 @@ ${clone.outerHTML}
           </button>
         </div>
 
-        <div ref={documentRef} className="relative bg-amber-50 w-full shadow-lg p-0 overflow-hidden" style={{ width: '210mm', margin: '0 auto' }}>
+        <div ref={documentRef} className="relative bg-amber-50 w-full shadow-lg p-0 overflow-hidden" style={{ width: '210mm', margin: '0 auto', minHeight: '297mm' }}>
           <Watermark />
-          <div className="relative z-10 flex flex-col p-12" style={{ minHeight: '297mm' }}>
-            <div className="flex gap-6 mb-6 border-b border-gray-400 pb-4">
+          <div className="relative z-10 flex flex-col" style={{ padding: '15mm 15mm 18mm 15mm', minHeight: '297mm' }}>
+            {/* ── Corporate Header ─────────────────────────────── */}
+            <div className="flex items-center gap-4" style={{ marginBottom: '6px' }}>
               <div className="flex-shrink-0"><JibondhraraLogo /></div>
-              <div className="flex-1">
-                <h1 className="text-center text-xl font-bold mb-1" style={{ color: '#1b5e20', fontFamily: 'var(--font-noto-bengali)' }}>জীবনধারা সোসাইটি (JIBONDHARA SOCIETY)</h1>
-                <p className="text-center text-xs text-gray-700" style={{ fontFamily: 'var(--font-noto-bengali)' }}>৯০,হাতেমবাগ রোড়, হাজারীবাগ, ঢাকা। | (90, Hatembag Road, Hazaribagh, Dhaka.)</p>
+              <div className="flex-1 flex flex-col justify-center" style={{ gap: '3px' }}>
+                <h1
+                  className="text-center font-bold"
+                  style={{
+                    color: '#1b5e20',
+                    fontFamily: 'var(--font-noto-bengali)',
+                    fontSize: '22px',
+                    fontWeight: 700,
+                    lineHeight: 1.3,
+                    letterSpacing: '0.5px',
+                    marginBottom: '3px',
+                  }}
+                >
+                  জীবনধারা সোসাইটি (JIBONDHARA SOCIETY)
+                </h1>
+                <p
+                  className="text-center"
+                  style={{
+                    fontFamily: 'var(--font-noto-bengali)',
+                    color: '#6b7280',
+                    fontSize: '13px',
+                    lineHeight: 1.4,
+                    letterSpacing: '0.3px',
+                  }}
+                >
+                  ৯০,হাতেমবাগ রোড়, হাজারীবাগ, ঢাকা। | (90, Hatembag Road, Hazaribagh, Dhaka.)
+                </p>
               </div>
             </div>
-            <div className="mb-6 flex items-center gap-2">
-              <label className="text-sm font-semibold text-gray-700">Date:</label>
-              <input type="text" name="date" placeholder="(e.g., February 24, 2024)" value={formData.date} onChange={handleInputChange}
-                className="flex-1 text-sm bg-transparent border-0 border-b border-gray-400 focus:border-green-600 focus:outline-none py-1 text-gray-700" />
+
+            {/* ── Subtle Divider ───────────────────────────────── */}
+            <div style={{ borderBottom: '1px solid #D6D6D6', marginBottom: '10px' }} />
+
+            {/* ── Date Row (plain text input) ──────────────────── */}
+            <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span
+                style={{
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  color: '#374151',
+                  fontFamily: 'Inter, Arial, sans-serif',
+                }}
+              >
+                Date:
+              </span>
+              <input
+                type="text"
+                value={formData.date}
+                onChange={(e) => setFormData((prev) => ({ ...prev, date: e.target.value }))}
+                placeholder="(e.g., January 12, 2024)"
+                style={{
+                  fontSize: '13px',
+                  color: '#374151',
+                  fontFamily: 'Inter, Arial, sans-serif',
+                  cursor: 'text',
+                  lineHeight: 1.5,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  padding: 0,
+                  flex: 1,
+                  appearance: 'none',
+                  WebkitAppearance: 'none',
+                }}
+              />
             </div>
-            <div className="mb-4">
-              <input type="text" name="headline" placeholder="" value={formData.headline} onChange={handleInputChange}
-                className="w-full font-bold text-sm bg-transparent border-0 border-b border-gray-300 focus:border-green-600 focus:outline-none py-2 text-center text-gray-900" />
+
+            {/* ── Headline (plain text input) ──────────────────── */}
+            <div style={{ marginBottom: '12px' }}>
+              <input
+                type="text"
+                name="headline"
+                placeholder=""
+                value={formData.headline}
+                onChange={handleInputChange}
+                style={{
+                  width: '100%',
+                  fontWeight: 700,
+                  fontSize: '14px',
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  textAlign: 'center',
+                  color: '#111827',
+                  fontFamily: 'var(--font-noto-bengali)',
+                  lineHeight: 1.5,
+                  padding: '4px 0',
+                  appearance: 'none',
+                  WebkitAppearance: 'none',
+                }}
+              />
             </div>
+
+            {/* ── Editor Content ───────────────────────────────── */}
             <div className="flex-1" style={{ minHeight: '200mm' }}>
               <Suspense fallback={<div className="flex items-center justify-center h-64 text-gray-400">Loading...</div>}>
                 <A4Editor storageKey="press-release-body"

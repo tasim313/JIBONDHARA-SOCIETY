@@ -2,7 +2,18 @@ import Image from 'next/image'
 
 export function Watermark() {
   return (
-    <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
+    <div
+      className="pointer-events-none flex items-center justify-center overflow-hidden"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '297mm',
+        width: '100%',
+        zIndex: 0,
+      }}
+    >
       {/* Logo watermark - center */}
       <div className="absolute opacity-8">
         <Image
@@ -44,14 +55,14 @@ export function Watermark() {
         </defs>
 
         {/* Bengali text - LEFT SIDE */}
-        <g opacity="0.14">
+        <g opacity="0.10">
           <text className="watermark-text watermark-bengali" x="150" y="425" textAnchor="middle">
             জীবনধারা
           </text>
         </g>
 
         {/* English text - RIGHT SIDE */}
-        <g opacity="0.12">
+        <g opacity="0.10">
           <text
             className="watermark-text watermark-english"
             x="1050"
