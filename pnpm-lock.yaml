@@ -110,9 +110,15 @@ importers:
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
+      html2canvas:
+        specifier: ^1.4.1
+        version: 1.4.1
       html2pdf.js:
         specifier: ^0.14.0
         version: 0.14.0
+      jspdf:
+        specifier: ^4.2.1
+        version: 4.2.1
       lowlight:
         specifier: ^3.3.0
         version: 3.3.0
